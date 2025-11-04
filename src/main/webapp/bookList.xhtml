@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+>
+<h:head>
+    <title>Приложение Книжный Магазин - Jakarta EE</title>
+</h:head>
+<h:body>
+    <h1>Управление Книгами (JSF + EJB + JPA)</h1>
+    
+    <hr/>
+
+    <h2>Добавить новую книгу</h2>
+    <h:form id="addForm">
+        <h:panelGrid columns="3" cellpadding="5">
+            
+            <h:outputLabel value="Название:" for="title"/>
+            <h:inputText id="title" value="#{bookController.newBook.title}" required="true"/>
+            <h:message for="title" style="color: red"/>
+
+            <h:outputLabel value="Автор:" for="author"/>
+            <h:inputText id="author" value="#{bookController.newBook.author}" required="true"/>
+            <h:message for="author" style="color: red"/>
+
+            <h:outputLabel value="Цена:" for="price"/>
+            <h:inputText id="price" value="#{bookController.newBook.price}" required="true"/>
+            <h:message for="price" style="color: red"/>
+            
+            <h:outputText value=""/> 
+            <h:commandButton value="Сохранить Книгу" action="#{bookController.saveBook}" />
+            <h:outputText value=""/>
+        </h:panelGrid>
+    </h:form>
+
+    <hr/>
+
+    <h2>Список всех книг</h2>
+    <h:form id="bookListForm">
+        <h:dataTable value="#{bookController.books}" var="book" border="1" autoUpdate="true">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{book.id}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Название</f:facet>
+                <h:outputText value="#{book.title}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Автор</f:facet>
+                <h:outputText value="#{book.author}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Цена</f:facet>
+                <h:outputText value="#{book.price}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Издатель</f:facet>
+                <h:outputText value="#{book.publisher.name}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Действия</f:facet>
+                <h:commandButton value="Удалить" action="#{bookController.deleteBook(book)}">
+                    <f:ajax execute="@this" render="@form"/> 
+                </h:commandButton>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+</h:body>
+</html>
